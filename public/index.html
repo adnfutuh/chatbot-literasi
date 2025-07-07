@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chatbot Literasi Keuangan</title>
+    <style>
+      body {
+        font-family: Arial;
+        margin: 40px;
+      }
+      textarea,
+      input {
+        width: 100%;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Chatbot AI Literasi Keuangan</h2>
+    <textarea id="chatLog" rows="10" readonly></textarea><br />
+    <input type="text" id="userInput" placeholder="Tulis pertanyaan keuangan..." />
+    <button onclick="sendMessage()">Kirim</button>
+
+    <script>
+      async function sendMessage() {
+        const input = document.getElementById("userInput").value;
+        const chatLog = document.getElementById("chatLog");
+
+        chatLog.value += "Kamu: " + input + "\n";
+
+        const response = await fetch("http://localhost:3000/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: input }),
+        });
+
+        const data = await response.json();
+        chatLog.value += "Bot: " + data.reply + "\n\n";
+        document.getElementById("userInput").value = "";
+      }
+    </script>
+  </body>
+</html>
